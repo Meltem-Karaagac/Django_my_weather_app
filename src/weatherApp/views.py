@@ -1,16 +1,20 @@
 import urllib.request
 import json
 from django.shortcuts import render
+from decouple import config
 
 
 def index(request):
+    api_key = config("API_KEY")
+    data = {}
     try:
 
         if request.method == 'POST':
             city = request.POST['city']
 
-            source = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q=' +
-                                            city + '&units=metric&appid=83268b6343df9182f622b2b137f0ec14').read()
+            source = urllib.request.urlopen(
+                'http://api.openweathermap.org/data/2.5/weather?q=' +
+                city + '&units=metric&appid='+api_key).read()
             list_of_data = json.loads(source)
 
             data = {
